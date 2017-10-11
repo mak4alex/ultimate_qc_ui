@@ -11,8 +11,11 @@
     "jquery": "^3.2.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
+    "react-ace": "^5.4.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
+    "react-split-pane": "^0.1.66",
+    "react-splitter-layout": "^3.0.0",
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
