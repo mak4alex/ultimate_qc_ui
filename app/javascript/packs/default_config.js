@@ -6,15 +6,17 @@ function props() {
 }
 
 function patch_product_title(etalon, product, result) {
-
+  return { "et_val": "NONE", "pr_val": "NONE", "comp": true }
 }
 
 function patch_find_brand_in_name(etalon, product, result) {
-
+  return { "et_val": "NONE", "pr_val": "NONE", "comp": true }
 }
 
 function count(etalon, product, result) {
+  var et_val = 3
 
+  return { "et_val": et_val, "pr_val": product["images_count"], "comp": product["images_count"] >= et_val }
 }
 
 `
