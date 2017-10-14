@@ -39,12 +39,22 @@ class QCConfigTab extends React.Component {
                       showLineNumbers: true,
                       tabSize: 2,
                     }}
+                    editorProps={{$blockScrolling: true}}
                     width="100%"
                     commands={[{
-                      name: 'recalc',
+                      name: 'validate',
                       bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter', lin: 'Ctrl-Enter'},
-                      exec: () => { console.log('key-binding used')}
+                      exec: () => { console.log('key-binding used for validate')}
+                    },{
+                      name: 'load',
+                      bindKey: {win: 'Ctrl-Space', mac: 'Command-Space', lin: 'Ctrl-Space'},
+                      exec: () => { console.log('key-binding used for load')}
                     }]}
+                    onSelectionChange={(selection, event) => { 
+                      console.log('onSelectionChange'); 
+                      console.log(event);
+                      console.log(selection.getCursor());
+                    }}
                   />
                 </Col>
                 <Col md={12}>
