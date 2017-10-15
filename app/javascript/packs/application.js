@@ -1,3 +1,4 @@
+import './styles'
 import 'jquery';
 import 'bootstrap-loader';
 import React from 'react';

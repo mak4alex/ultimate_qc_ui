@@ -15,8 +15,9 @@ function patch_find_brand_in_name(etalon, product, result) {
 
 function count(etalon, product, result) {
   var et_val = 3
+  var pr_val = product["images_count"] || 0
 
-  return { "et_val": et_val, "pr_val": product["images_count"], "comp": product["images_count"] >= et_val }
+  return { "et_val": et_val, "pr_val": pr_val, "comp": pr_val >= et_val }
 }
 
 `

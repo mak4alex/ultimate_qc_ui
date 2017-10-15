@@ -4,12 +4,16 @@ import { Tab } from 'react-bootstrap';
 
 
 class LogTab extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <Tab eventKey={2} title="Logs">Tab 3 content</Tab>
+      <Tab {...this.props}>Tab log content</Tab>
     );
   }
 }
-
 
 export default LogTab;

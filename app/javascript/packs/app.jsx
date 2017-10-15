@@ -1,9 +1,7 @@
-import './styles'
-
 import React from 'react';
+import { Col, Grid, Row, Tab, Tabs } from 'react-bootstrap';
 import QCConfigTab from './qc_config_tab';
 import LogTab from './log_tab';
-import { Col, Grid, Row, Tabs } from 'react-bootstrap';
 
 
 class App extends React.Component {
@@ -14,8 +12,8 @@ class App extends React.Component {
         <Row>
           <Col md={12}>
             <Tabs defaultActiveKey={1} id="main-tabs">
-              <QCConfigTab/>
-              <LogTab/>
+              <QCConfigTab eventKey={1} title="QC Config"/>
+              <LogTab      eventKey={2} title="Logs"/>
             </Tabs>
           </Col>
         </Row>
