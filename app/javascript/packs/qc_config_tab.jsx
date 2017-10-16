@@ -1,16 +1,11 @@
 import React from 'react';
 import SplitterLayout from 'react-splitter-layout';
-import brace from 'brace';
-import AceEditor from 'react-ace';
 import defaultConfig from './default_config'
 import sampleRawData from './sample_raw_data'
+import ValidatedDataPanel from './validated_data_panel'
+import ConfigEditorPanel from './config_editor_panel'
 import RawDataPanel from './raw_data_panel'
 import { Col, Grid, Row, Tabs, Tab } from 'react-bootstrap';
-import 'brace/mode/javascript';
-import 'brace/snippets/javascript';
-import 'brace/theme/github';
-import 'brace/ext/language_tools';
-import 'brace/ext/searchbox';
 
 
 
@@ -25,11 +20,13 @@ class QCConfigTab extends React.Component {
         column: 0
       },
       selectedRawDataFields: [],
-      rawData: sampleRawData
+      rawData: sampleRawData,
+      validatedData: []
     };
     this.handleConfigChange    = this.handleConfigChange.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
     this.handleLoadRawData     = this.handleLoadRawData.bind(this);
+    this.handleValidateData    = this.handleValidateData.bind(this);
   }
 
   handleConfigChange(value, event) {
@@ -45,13 +42,35 @@ class QCConfigTab extends React.Component {
 
   handleLoadRawData(event) {
     console.log('handleLoadRawData')
-    console.log("cursorPosition")
+    console.log('cursorPosition')
     console.log(this.state.cursorPosition)
     let variants = [['brand', 'product_name'], ['images_count']]
     this.setState({
       selectedRawDataFields: variants[Math.floor(Math.random()*variants.length)]
     })
     console.log(this.state.selectedRawDataFields)
+  }
+
+  handleValidateData(event) {
+    console.log('handleValidateData')
+    window.eval(this.state.config)
+    console.log(patch_count)
+    const validatedData = this.state.rawData.map(row => {
+      const t = patch_count(
+        {}, 
+        {
+          'images_count': parseInt(row['comp_images_count'])
+        }
+      );
+      t['label']   = 'Number of Images'
+      t['shop_id'] = row['comp_shop_id']
+      return t;
+    })
+
+    console.log(validatedData)
+    this.setState({
+      validatedData: validatedData
+    });
   }
 
   handleSelectionChange(selection, event) {
@@ -70,45 +89,18 @@ class QCConfigTab extends React.Component {
         <SplitterLayout customClassName="row">
             <Col md={12}>
               <SplitterLayout vertical={true} customClassName="row">
-                <Col md={12}>
-                  <AceEditor
-                    mode="javascript"
-                    theme="github"
-                    name="ultimate_editor"
-                    onLoad={this.onLoad}
-                    onChange={this.handleConfigChange}
-                    onSelectionChange={this.handleSelectionChange}
-                    fontSize={14}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    value={this.state.config}
-                    setOptions={{
-                      enableBasicAutocompletion: true,
-                      enableLiveAutocompletion: true,
-                      enableSnippets: true,
-                      showLineNumbers: true,
-                      tabSize: 2,
-                    }}
-                    editorProps={{$blockScrolling: true}}
-                    width="100%"
-                    commands={[{
-                      name: 'validate',
-                      bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter', lin: 'Ctrl-Enter'},
-                      exec: () => { console.log('key-binding used for validate')}
-                    },{
-                      name: 'load',
-                      bindKey: {win: 'Ctrl-Space', mac: 'Command-Space', lin: 'Ctrl-Space'},
-                      exec: this.handleLoadRawData
-                    }]}                    
-                  />
-                </Col>
-                <RawDataPanel data={sampleRawData} selectedFields={this.state.selectedRawDataFields}/>
+                <ConfigEditorPanel 
+                  config={this.state.config}
+                  handleConfigChange={this.handleConfigChange}
+                  handleSelectionChange={this.handleSelectionChange}
+                  handleLoadRawData={this.handleLoadRawData}
+                  handleValidateData={this.handleValidateData}
+                  handleConfigLoad={this.handleConfigLoad}
+                />                
+                <RawDataPanel data={this.state.rawData} selectedFields={this.state.selectedRawDataFields}/>
               </SplitterLayout>
             </Col>
-            <Col md={12}>
-              <h2>dsadasdsdas</h2>
-            </Col>
+            <ValidatedDataPanel data={this.state.validatedData} />
         </SplitterLayout>
       </Tab>
     );
